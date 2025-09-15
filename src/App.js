@@ -154,6 +154,24 @@ function App() {
 
   return (
     <div className="App">
+      <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginBottom: 8 }}>
+        <button
+          style={{
+            background: 'transparent',
+            border: 'none',
+            color: '#61dafb',
+            fontSize: '1em',
+            cursor: 'pointer',
+            marginRight: 8,
+            marginTop: 4,
+            textDecoration: 'underline'
+          }}
+          title="Change PIN"
+          onClick={() => setShowChangePin(!showChangePin)}
+        >
+          Change PIN
+        </button>
+      </div>
       <h1>Secret List</h1>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 8 }}>
         <input
@@ -230,12 +248,6 @@ function App() {
           })}
         </ul>
       )}
-      <button
-        style={{ marginTop: 24, fontSize: '0.95em' }}
-        onClick={() => setShowChangePin(!showChangePin)}
-      >
-        Change PIN
-      </button>
       {showChangePin && (
         <div
           className="change-pin"
