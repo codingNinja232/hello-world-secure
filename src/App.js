@@ -154,12 +154,12 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Serect List</h1>
+      <h1>Secret List</h1>
       <input
         type="text"
         value={input}
         onChange={e => setInput(e.target.value)}
-        placeholder="Add new serect"
+        placeholder="Add new secret"
         onKeyDown={e => {
           if (e.key === 'Enter') handleAdd();
         }}
