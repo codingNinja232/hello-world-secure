@@ -14,14 +14,8 @@ function App() {
   const [input, setInput] = useState('');
   const [editIndex, setEditIndex] = useState(null);
   const [editValue, setEditValue] = useState('');
-
-  // Password management
-  const [storedPin, setStoredPin] = useState(() => {
-    return localStorage.getItem('appPin') || DEFAULT_PIN;
-  });
+  const [storedPin, setStoredPin] = useState(() => localStorage.getItem('appPin') || DEFAULT_PIN);
   const [changePinMsg, setChangePinMsg] = useState('');
-
-  // Delete confirmation
   const [deleteIndex, setDeleteIndex] = useState(null);
 
   useEffect(() => {
@@ -33,21 +27,18 @@ function App() {
   }, [storedPin]);
 
   const handleAdd = () => {
-    if (input.trim() !== '') {
-      setItems([...items, input.trim()]);
+    const value = input.trim();
+    if (value) {
+      setItems(prev => [...prev, value]);
       setInput('');
     }
   };
 
-  const handleRemove = (index) => {
-    setDeleteIndex(index);
-  };
+  const handleRemove = (index) => setDeleteIndex(index);
 
   const confirmRemove = () => {
     if (deleteIndex !== null) {
-      const newItems = [...items];
-      newItems.splice(deleteIndex, 1);
-      setItems(newItems);
+      setItems(prev => prev.filter((_, i) => i !== deleteIndex));
       if (editIndex === deleteIndex) {
         setEditIndex(null);
         setEditValue('');
@@ -56,33 +47,27 @@ function App() {
     }
   };
 
-  const cancelRemove = () => {
-    setDeleteIndex(null);
-  };
+  const cancelRemove = () => setDeleteIndex(null);
 
   const handleEdit = (index) => {
     setEditIndex(index);
     setEditValue(items[index]);
   };
 
-  const handleEditChange = (e) => {
-    setEditValue(e.target.value);
-  };
+  const handleEditChange = (e) => setEditValue(e.target.value);
 
   const handleEditSave = (index) => {
-    if (editValue.trim() !== '') {
-      const newItems = [...items];
-      newItems[index] = editValue.trim();
-      setItems(newItems);
+    const value = editValue.trim();
+    if (value) {
+      setItems(prev => prev.map((item, i) => (i === index ? value : item)));
       setEditIndex(null);
       setEditValue('');
     }
   };
 
   const handleEditKeyDown = (e, index) => {
-    if (e.key === 'Enter') {
-      handleEditSave(index);
-    } else if (e.key === 'Escape') {
+    if (e.key === 'Enter') handleEditSave(index);
+    else if (e.key === 'Escape') {
       setEditIndex(null);
       setEditValue('');
     }
@@ -103,7 +88,7 @@ function App() {
   return (
     <div className="App">
       <h2>Secret</h2>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 8 }}>
+      <div className="add-row">
         <input
           type="text"
           value={input}
@@ -121,17 +106,7 @@ function App() {
         {[...items].sort((a, b) => a.localeCompare(b)).map((item, idx) => {
           const origIndex = items.findIndex(i => i === item);
           return (
-            <li
-              key={idx}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                width: '100%',
-                position: 'relative'
-              }}
-              className="list-item"
-            >
+            <li key={idx} className="list-item">
               {editIndex === origIndex ? (
                 <>
                   <input
@@ -174,33 +149,21 @@ function App() {
                   >&#10006;</button>
                 </>
               )}
-              {/* Delete confirmation dialog */}
-              {deleteIndex === origIndex && (
-                <div
-                  style={{
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
-                    background: '#23262f',
-                    color: '#fff',
-                    border: '1px solid #353945',
-                    borderRadius: 8,
-                    padding: 16,
-                    zIndex: 10,
-                    minWidth: 200,
-                    boxShadow: '0 2px 8px rgba(0,0,0,0.3)'
-                  }}
-                >
-                  <div style={{ marginBottom: 12 }}>Are you sure you want to delete this item?</div>
-                  <button onClick={confirmRemove} style={{ marginRight: 8 }}>Yes</button>
-                  <button onClick={cancelRemove}>No</button>
-                </div>
-              )}
             </li>
           );
         })}
       </ul>
+
+      {/* Delete Confirmation Popup */}
+      {deleteIndex !== null && (
+        <div className="popup-overlay">
+          <div className="popup-content">
+            <div style={{ marginBottom: 12 }}>Are you sure you want to delete this item?</div>
+            <button onClick={confirmRemove} style={{ marginRight: 8 }}>Yes</button>
+            <button onClick={cancelRemove}>No</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
