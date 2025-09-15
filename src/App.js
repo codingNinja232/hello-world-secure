@@ -155,16 +155,19 @@ function App() {
   return (
     <div className="App">
       <h1>Secret List</h1>
-      <input
-        type="text"
-        value={input}
-        onChange={e => setInput(e.target.value)}
-        placeholder="Add new secret"
-        onKeyDown={e => {
-          if (e.key === 'Enter') handleAdd();
-        }}
-      />
-      <button onClick={handleAdd}>Add</button>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 8 }}>
+        <input
+          type="text"
+          value={input}
+          onChange={e => setInput(e.target.value)}
+          placeholder="Add new secret"
+          onKeyDown={e => {
+            if (e.key === 'Enter') handleAdd();
+          }}
+          style={{ marginRight: 8 }}
+        />
+        <button onClick={handleAdd}>Add</button>
+      </div>
       {!showChangePin && (
         <ul>
           {items.length === 0 && <li>No elements yet.</li>}
