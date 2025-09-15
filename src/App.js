@@ -146,33 +146,72 @@ function App() {
         />
         <button onClick={handlePinSubmit} disabled={isLocked}>Submit</button>
         {pinError && <p style={{ color: 'red' }}>{pinError}</p>}
-        
-        
+        <div style={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 12 }}>
+          <button
+            style={{
+              background: 'transparent',
+              border: 'none',
+              color: '#61dafb',
+              fontSize: '1em',
+              cursor: 'pointer',
+              textDecoration: 'underline'
+            }}
+            title="Change PIN"
+            onClick={() => setShowChangePin(!showChangePin)}
+          >
+            Change PIN
+          </button>
+        </div>
+        {showChangePin && (
+          <div
+            className="change-pin"
+            style={{
+              background: '#23262f',
+              borderRadius: 8,
+              padding: 16,
+              marginTop: 16,
+              minWidth: 260
+            }}
+          >
+            <h3 style={{ marginTop: 0 }}>Change PIN</h3>
+            <input
+              type="password"
+              value={oldPin}
+              onChange={e => setOldPin(e.target.value)}
+              placeholder="Old PIN"
+              maxLength={4}
+              style={{ marginBottom: 8 }}
+            />
+            <input
+              type="password"
+              value={newPin}
+              onChange={e => setNewPin(e.target.value)}
+              placeholder="New PIN"
+              maxLength={4}
+              style={{ marginBottom: 8 }}
+            />
+            <input
+              type="password"
+              value={confirmPin}
+              onChange={e => setConfirmPin(e.target.value)}
+              placeholder="Confirm New PIN"
+              maxLength={4}
+              style={{ marginBottom: 8 }}
+            />
+            <div>
+              <button onClick={handleChangePin}>Save</button>
+              <button onClick={() => setShowChangePin(false)} style={{ marginLeft: 8 }}>Cancel</button>
+            </div>
+            {changePinMsg && <p style={{ color: changePinMsg.includes('success') ? 'lightgreen' : 'red' }}>{changePinMsg}</p>}
+          </div>
+        )}
       </div>
     );
   }
 
   return (
     <div className="App">
-      <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginBottom: 8 }}>
-        <button
-          style={{
-            background: 'transparent',
-            border: 'none',
-            color: '#61dafb',
-            fontSize: '1em',
-            cursor: 'pointer',
-            marginRight: 8,
-            marginTop: 4,
-            textDecoration: 'underline'
-          }}
-          title="Change PIN"
-          onClick={() => setShowChangePin(!showChangePin)}
-        >
-          Change PIN
-        </button>
-      </div>
-      <h1>Secret List</h1>
+      <h1>Secret</h1>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 8 }}>
         <input
           type="text"
@@ -248,49 +287,7 @@ function App() {
           })}
         </ul>
       )}
-      {showChangePin && (
-        <div
-          className="change-pin"
-          style={{
-            background: '#23262f',
-            borderRadius: 8,
-            padding: 16,
-            marginTop: 16,
-            minWidth: 260
-          }}
-        >
-          <h3 style={{ marginTop: 0 }}>Change PIN</h3>
-          <input
-            type="password"
-            value={oldPin}
-            onChange={e => setOldPin(e.target.value)}
-            placeholder="Old PIN"
-            maxLength={4}
-            style={{ marginBottom: 8 }}
-          />
-          <input
-            type="password"
-            value={newPin}
-            onChange={e => setNewPin(e.target.value)}
-            placeholder="New PIN"
-            maxLength={4}
-            style={{ marginBottom: 8 }}
-          />
-          <input
-            type="password"
-            value={confirmPin}
-            onChange={e => setConfirmPin(e.target.value)}
-            placeholder="Confirm New PIN"
-            maxLength={4}
-            style={{ marginBottom: 8 }}
-          />
-          <div>
-            <button onClick={handleChangePin}>Save</button>
-            <button onClick={() => setShowChangePin(false)} style={{ marginLeft: 8 }}>Cancel</button>
-          </div>
-          {changePinMsg && <p style={{ color: changePinMsg.includes('success') ? 'lightgreen' : 'red' }}>{changePinMsg}</p>}
-        </div>
-      )}
+      {showChangePin && null}
     </div>
   );
 }
