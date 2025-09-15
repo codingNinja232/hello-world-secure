@@ -45,6 +45,9 @@ function App() {
           onChange={e => setPin(e.target.value)}
           placeholder="Enter PIN"
           maxLength={4}
+          onKeyDown={e => {
+            if (e.key === 'Enter') handlePinSubmit();
+          }}
         />
         <button onClick={handlePinSubmit}>Submit</button>
         {pinError && <p style={{ color: 'red' }}>{pinError}</p>}
