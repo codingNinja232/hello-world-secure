@@ -27,7 +27,9 @@ function App() {
   const [newPin, setNewPin] = useState('');
   const [confirmPin, setConfirmPin] = useState('');
   const [changePinMsg, setChangePinMsg] = useState('');
-  
+
+  // Delete confirmation
+  const [deleteIndex, setDeleteIndex] = useState(null);
 
   useEffect(() => {
     localStorage.setItem('testElements', JSON.stringify(items));
@@ -45,13 +47,24 @@ function App() {
   };
 
   const handleRemove = (index) => {
-    const newItems = [...items];
-    newItems.splice(index, 1);
-    setItems(newItems);
-    if (editIndex === index) {
-      setEditIndex(null);
-      setEditValue('');
+    setDeleteIndex(index);
+  };
+
+  const confirmRemove = () => {
+    if (deleteIndex !== null) {
+      const newItems = [...items];
+      newItems.splice(deleteIndex, 1);
+      setItems(newItems);
+      if (editIndex === deleteIndex) {
+        setEditIndex(null);
+        setEditValue('');
+      }
+      setDeleteIndex(null);
     }
+  };
+
+  const cancelRemove = () => {
+    setDeleteIndex(null);
   };
 
   const handleEdit = (index) => {
@@ -125,8 +138,6 @@ function App() {
     setChangePinMsg('PIN changed successfully!');
     setTimeout(() => setChangePinMsg(''), 2000);
   };
-
-  
 
   if (!authenticated) {
     const isLocked = attempts >= MAX_ATTEMPTS;
@@ -283,6 +294,29 @@ function App() {
                       disabled={editIndex !== null}
                     >&#10006;</button>
                   </>
+                )}
+                {/* Delete confirmation dialog */}
+                {deleteIndex === origIndex && (
+                  <div
+                    style={{
+                      position: 'absolute',
+                      top: '50%',
+                      left: '50%',
+                      transform: 'translate(-50%, -50%)',
+                      background: '#23262f',
+                      color: '#fff',
+                      border: '1px solid #353945',
+                      borderRadius: 8,
+                      padding: 16,
+                      zIndex: 10,
+                      minWidth: 200,
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.3)'
+                    }}
+                  >
+                    <div style={{ marginBottom: 12 }}>Are you sure you want to delete this item?</div>
+                    <button onClick={confirmRemove} style={{ marginRight: 8 }}>Yes</button>
+                    <button onClick={cancelRemove}>No</button>
+                  </div>
                 )}
               </li>
             );
