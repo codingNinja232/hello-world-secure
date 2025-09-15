@@ -211,7 +211,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Secret</h1>
+      <h2>Secret</h2>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 8 }}>
         <input
           type="text"
@@ -274,11 +274,13 @@ function App() {
                       onClick={() => handleEdit(origIndex)}
                       className="edit-btn"
                       title="Edit"
+                      disabled={editIndex !== null}
                     >✏️</button>
                     <button
                       onClick={() => handleRemove(origIndex)}
                       className="remove-btn"
                       title="Remove"
+                      disabled={editIndex !== null}
                     >&#10006;</button>
                   </>
                 )}
